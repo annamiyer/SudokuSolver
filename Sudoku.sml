@@ -1,7 +1,37 @@
 (* Name: Annam Iyer and Caroline Memishian *)
 (* Sudoku Solver *)
 
+(*read in a file, can't figure this out exactly*)
+
+val infile = "C:/sudoku.txt";
+fun read infile = let val inStream = TextIO.openIn file
+in
+	TextIO.input1 inStream
+end
+
+
 exception invalid of int;
+(* the sudoku board is a list of lists representing the board *)
+
+fun solve board = let fun solve' board row illegalNums =
+    (*keep track of illegal numbers, if we are on row 9 and board legal, we are done*)
+    if row = 9 andalso completedBoard board andalso checkLegal board then board else
+    (* if we are on row 9 but the board is not legal, throw exception*)
+    if row = 9 then raise invalid n
+    let val row = (List.nth (board, row)); (* get current row to work on*)
+
+fun attempt num row col = 
+    (*if number is great than 9, throw exception and backtrack*)
+    if num > 9 then raise invalid n
+    (*if the spot we are checking is already fil, move to next column*)
+    else if not (List.nth (row, col) = 0) then attempt num row (col+1)
+    (*if the number is not allowed, skip to next number, ADD CASE HERE*)
+    
+    (*if the row has the number, go to the next number*)
+    
+
+    (*if the col has the number, go to the next number*)
+
 
 fun checkValid n = if n >= 0 andalso n < 9 then n else raise invalid n;
 
@@ -11,8 +41,10 @@ fun getRow board row  = List.nth (board, checkValid row);
 
 fun getCol board col  = List.nth (board, checkValid column);
 
-fun solve board
 			      
+
+
+
 
 						     
 							    
