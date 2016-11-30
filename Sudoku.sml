@@ -1,52 +1,6 @@
-
-
 (* Name: Annam Iyer and Caroline Memishian *)
 (* Sudoku Solver *)
 
-(*read in a file, can't figure this out exactly*)
-
-(*
-val infile = "C:/sudoku.txt";
-fun read infile = let val inStream = TextIO.openIn file;
-in
-    TextIO.input1 inStream;
-		  end;
-
-fun print-board board; 
-
-
-exception invalid of int;
-(* the sudoku board is a list of lists representing the board *)
-
-fun solve board = let fun solve' board row illegalNums =
-    (*keep track of illegal numbers, if we are on row 9 and board legal, we are done*)
-    if row = 9 andalso completedBoard board andalso checkLegal board then board else
-    (* if we are on row 9 but the board is not legal, throw exception*)
-    if row = 9 then raise invalid n
-    let val row = (List.nth (board, row)); (* get current row to work on*)
-
-fun attempt num row col = 
-    (*if number is great than 9, throw exception and backtrack*)
-    if num > 9 then raise invalid n
-    (*if the spot we are checking is already filled, move to next column*)
-    else if not (List.nth (row, col) = 0) then attempt num row (col+1)
-    (*if the number is not allowed, skip to next number, ADD CASE HERE*)
-    
-    (*if the row has the number, go to the next number*)
-    
-
-    (*if the col has the number, go to the next number*)
-*)
-
-(* Racket Functions from Proj#2 below *)
-						       
-(*fun  printBoard (board)
-		
-
-		
-						       
-fun printRow (row)
-	     fun foldr 
 
 	     
 						       
@@ -58,7 +12,6 @@ fun getBoardFromFile (infile) =
       val text = TextIO.inputAll(inStream)
   in print(text)
   end;
-
 read(infile);
 *)
 
@@ -141,16 +94,21 @@ fun columnCheck (board, col, num) =
   *)
 
 
+(*attempt at square check
+fun squareCheck (row, firstrow, firstcolumn, num) =
+  while firstrow <=2 do (
+		     while firstcolumn  <= 2 do (
+					     case row of
+						 [] => false
+					       | h::t => if h = num
+							 then true
+							 else squareCheck(t, firstrow, firstcolumn+1, num)
+		     )
+					     
+  );
+*)
+	    
 (*check the 3x3 box to see if the number is legal*)
-fun squareCheck (board, firstrow, firstcolumn, row, column, num) =
-  case firstrow and firstcolumn of
-      [] => falsse
-    | h::t
-
-
-
-
-
 fun squareCheck (board, firstrow, firstcolumn, row, column, num) =
   let fun checkHelper (board, firstrow, firstcolumn, row, column, num) =
 	let val testNum' =  getVal (board, (firstcolumn + column), (firstrow + row))
@@ -175,6 +133,7 @@ fun overallCheck (board, row, column, num) =
      else false
   end;
 
+(*finds all the zeros on the board *)
 fun findZero (board) =
   let fun check (board, row, column)
 		if column = 8
@@ -185,6 +144,7 @@ fun findZero (board) =
   in check (board, 0, 0)
   end;			       
 
+(*calls the overall check and sets the value*)
 fun solveDriver (board) =
   let val value' = findZero (board);
       let fun check (board, row, column, num) =
@@ -205,8 +165,9 @@ fun solveDriver (board) =
   in value
   end;
 
+(*prints out the full, final board*)
 fun sudokuSolver () =
-  let val board' = tester;
+  let val board' = tester
   in if board'
      then (print ""; print "Here is the initial board:"; printBoard (board); print "")
 	   let val solution =  solveDriver (board);
@@ -217,17 +178,3 @@ fun sudokuSolver () =
      else (print "There is no board to process")
   end;
 
-
-
-							     
-
-
-
-							     
-
-
-
-
-						     
-							    
-							     
