@@ -1,8 +1,10 @@
 (* Name: Annam Iyer and Caroline Memishian *)
 (* Sudoku Solver *)
+(*Honor code: We pledge to pursue all academic endeavors with honor and integrity. 
+We understand the principles of the Honor System, and we promise to uphold these standards 
+by adhering to the Honor Code in order to preserve the integrity of Vanderbilt University 
+and its individual members. *)
 
-
-	     
 						       
 fun getBoard ()*)
 (*
