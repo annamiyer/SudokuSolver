@@ -90,15 +90,18 @@ fun setVal (row, index, num) =
 
 (*setVal ([1,2,3,0,4,5], 3, 5);*)
  
-fun rowCheck (board, row, index, num) =
+ 
+ 
+(*check the row to see if the number is legal*)
+fun rowCheck (row, num) =
   case row of
-      [] => []
-    | h::t => if (List.nth(row, index))  = num
-	      then false
-	      else rowCheck (board, t, (index+1), num);
+      [] => false
+    | h::t => if h  = num
+	      then true
+	      else rowCheck (t, num);
 		       
 
-
+(*
 fun rowCheck (board, row, num) =				 
   let fun checkHelper (board, row, start, finish, num) =
 	let val testNum' =   getVal (board, col, row)
@@ -110,8 +113,19 @@ fun rowCheck (board, row, num) =
 	in testNum' end
   in checkHelper (board, row, 0, 8, num)
   end;
-	  
-   						
+  *)
+
+
+(*check the col to see if the number is legal*)
+fun columnCheck (col, num) =
+  case col of
+      [] => false
+    | h::t => if h  = num
+	      then true
+	      else columnCheck (t, num);
+
+
+(*
 fun columnCheck (board, col, num) =				 
   let fun checkHelper (board, col, start, finish, num) =
 	let val testNum' =   getVal (board col row)
@@ -123,6 +137,19 @@ fun columnCheck (board, col, num) =
 	in testNum' end
   in checkHelper (board, col, 0, 8, num)
   end;
+  
+  *)
+
+
+(*check the 3x3 box to see if the number is legal*)
+fun squareCheck (board, firstrow, firstcolumn, row, column, num) =
+  case firstrow and firstcolumn of
+      [] => falsse
+    | h::t
+
+
+
+
 
 fun squareCheck (board, firstrow, firstcolumn, row, column, num) =
   let fun checkHelper (board, firstrow, firstcolumn, row, column, num) =
@@ -138,6 +165,8 @@ fun squareCheck (board, firstrow, firstcolumn, row, column, num) =
   in checkHelper (firstrow, firstcolumn, 0, 0, num)
   end;
 
+
+(*call all the checking functions and determine if the number is legal*)
 fun overallCheck (board, row, column, num) =
   let val firstInRow' = row - (row % 9);
       val firstInColumn' = column - (column % 9);
