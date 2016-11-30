@@ -1,4 +1,5 @@
 
+
 (* Name: Annam Iyer and Caroline Memishian *)
 (* Sudoku Solver *)
 
@@ -39,90 +40,94 @@ fun attempt num row col =
 
 (* Racket Functions from Proj#2 below *)
 						       
-fun  printBoard (board)						       
+(*fun  printBoard (board)
+		
+
+		
 						       
 fun printRow (row)
-						       
-fun getBoard ()
+	     fun foldr 
 
-val infile = "":string;
+	     
+						       
+fun getBoard ()*)
+(*
+val infile = "C:/sudoku.txt":string;
 fun getBoardFromFile (infile) =
-  let val inStream = TextIO.openln(infile);
-      val text = TextIO.inputAll(inStream);
+  let val inStream = TextIO.openIn(infile)
+      val text = TextIO.inputAll(inStream)
   in print(text)
   end;
 
 read(infile);
+*)
 
-						       
-fun getVal (board col row) = List.nth (List.nth (board, row), column);
 
-fun setVal (board, col, row, num) =
-  let val new = num
-  in setVal(num)
-  end;
+fun row_to_string (row) =
+  case row of
+      [] => ""
+    | h::t => Int.toString(h) ^ " " ^ row_to_string (t);
+
+
+fun board_to_string (board) =
+  case board of
+      [] => ""
+    | h::t  => row_to_string (h) ^ "\n" ^ board_to_string(t);
  
-fun sudokuSolver () =
-  let val board = getBoard;
-  in if board
-     then (print ""; print "Here is the initial board:"; printBoard (board); print "")
-	   let val solution =  solveDriver (board);
-	   in if solution = null
-	      then (print "No Solution")
-	      else (print ""; print "Here is the solution:"; printBoard (solution); print "")
-     else (print "There is no board to process")
-  end;
-      
-fun solveDriver (board) =
-  let val value = findZero (board);
-      let fun check (board, row, column, num) =
-	    if (num > 9) or (num <= 0)
-	    then null
-	    else if overallCheck (board, row, column, num)
-	    then let val newBoard =
-		       solveDriver (setVal (board, row, colum,n num))
-		 in if  newBoard = null		       
-		    then check (board, row, column, (num+1))
-		    else newBoard
-		 end;	     
-	    else check (board, row, column, (num+1))	       
-      in if value = -1
-	 then board
-	 else check (board, (hd  value), (tl value) 1)
-      end
-  in value
-  end;
+val tester =
+    [[5, 3, 0, 0, 7, 0, 0, 0, 0],[6, 0, 0, 1, 9, 5, 0, 0, 0],[1,2,3,4,5,6,7,8,9],[1,2,3,4,5,6,7,8,9],[1,2,3,4,5,6,7,8,9],[1,2,3,4,5,6,7,8,9],[1,2,3,4,5,6,7,8,9],[1,2,3,4,5,6,7,8,9],[1,2,3,4,5,6,7,8,9],[1,2,3,4,5,6,7,8,9]];
+
+fun getVal (board, column, row) = List.nth (List.nth (board, row), column);
+
+(*getVal (tester, 1, 1);*)
+
+fun setVal (row, index, num) =
+  case row of
+      [] => []
+    | h::t  => if index = 0
+	       then num :: t
+	       else h :: setVal (t, (index - 1), num);
+
+(*setVal ([1,2,3,0,4,5], 3, 5);*)
  
-      
-		
-fun rowCheck board row num =				 
-  let fun checkHelper board row start finish num =
-	let val testNum' =  fun getVal (board col row)
+fun rowCheck (board, row, index, num) =
+  case row of
+      [] => []
+    | h::t => if (List.nth(row, index))  = num
+	      then false
+	      else rowCheck (board, t, (index+1), num);
+		       
+
+
+fun rowCheck (board, row, num) =				 
+  let fun checkHelper (board, row, start, finish, num) =
+	let val testNum' =   getVal (board, col, row)
 				       if finish < start
 				       then true
-				       else if val testNum = num
-				       then false
-				       else fun checkHelper (board row start (finish - 1) num)
+				       else if  testNum' = num
+				       then  false
+				       else  checkHelper (board, row, start, (finish - 1), num)
 	in testNum' end
-  in fun checkHelper (board row 0 8 num)
+  in checkHelper (board, row, 0, 8, num)
   end;
+	  
    						
-fun columnCheck board col num =				 
-  let fun checkHelper board col start finish num =
-	let val testNum' =  fun getVal (board col row)
+fun columnCheck (board, col, num) =				 
+  let fun checkHelper (board, col, start, finish, num) =
+	let val testNum' =   getVal (board col row)
 				       if finish < start
 				       then true
-				       else if val testNum = num
+				       else if  testNum' = num
 				       then false
-				       else fun checkHelper (board col  start (finish - 1) num)
+				       else checkHelper (board, col, start, (finish - 1), num)
 	in testNum' end
-  in fun checkHelper (board col 0 8 num)
+  in checkHelper (board, col, 0, 8, num)
   end;
 
 fun squareCheck (board, firstrow, firstcolumn, row, column, num) =
   let fun checkHelper (board, firstrow, firstcolumn, row, column, num) =
-	let val testNum' = fun getVal (board, (firstcolumn + column), (firstrow + row))
-					     if val testNum = num
+	let val testNum' =  getVal (board, (firstcolumn + column), (firstrow + row))
+					     if  testNum' = num
 					     then false
 					     else if row = 8 then
 						 if column = 8
@@ -136,7 +141,7 @@ fun squareCheck (board, firstrow, firstcolumn, row, column, num) =
 fun overallCheck (board, row, column, num) =
   let val firstInRow' = row - (row % 9);
       val firstInColumn' = column - (column % 9);
-  in if rowCheck (board, row, num) and columnCheck (board, column, num) and squareCheck (board, firstInRow, firstInColumn, row, column, num)
+  in if rowCheck (board, row, num) and columnCheck (board, column, num) and squareCheck (board, firstInRow', firstInColumn', row, column, num)
      then true
      else false
   end;
@@ -150,8 +155,44 @@ fun findZero (board) =
 		else check (board, row, (column +1))
   in check (board, 0, 0)
   end;			       
-				  						     
-end;
+
+fun solveDriver (board) =
+  let val value' = findZero (board);
+      let fun check (board, row, column, num) =
+	    if (num > 9) or (num <= 0)
+	    then null
+	    else if overallCheck (board, row, column, num)
+	    then let val newBoard' =
+		       solveDriver (setVal (board, row, column, num))
+		 in if  newBoard' = null		       
+		    then check (board, row, column, (num+1))
+		    else newBoard'
+		 end;	     
+	    else check (board, row, column, (num+1))	       
+      in if value' = -1
+	 then board
+	 else check (board, (hd  value'), (tl value') 1)
+      end
+  in value
+  end;
+
+fun sudokuSolver () =
+  let val board' = tester;
+  in if board'
+     then (print ""; print "Here is the initial board:"; printBoard (board); print "")
+	   let val solution =  solveDriver (board);
+	   in if solution = null
+	      then (print "No Solution")
+	      else (print ""; print "Here is the solution:"; printBoard (solution); print "")
+	   end
+     else (print "There is no board to process")
+  end;
+
+
+
+							     
+
+
 
 							     
 
